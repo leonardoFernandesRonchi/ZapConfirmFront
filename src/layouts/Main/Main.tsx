@@ -47,7 +47,7 @@ const Main = () => {
       </aside>
 
       {/* Conteúdo */}
-      <main className="flex-1 p-4 md:p-6 bg-gray-50 pb-20 md:pb-6">
+      <main className="flex-1 p-4 md:p-6 bg-[#F5F8F5] pb-20 md:pb-6">
         <Outlet />
       </main>
 
