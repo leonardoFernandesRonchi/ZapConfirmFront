@@ -25,7 +25,7 @@ const login = async ({
   email: string;
   password: string;
 }) => {
-  const response = await apiClient.post('/users', {
+  const response = await apiClient.post('/users/signIn', {
     email,
     password,
   });
