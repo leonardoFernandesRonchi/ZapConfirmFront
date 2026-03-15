@@ -33,7 +33,18 @@ const login = async ({
   return response;
 };
 
+const fetchUser = async () => {
+  const response = await apiClient.get('/users/me');
+  return response;
+};
+
+const logOut = async () => {
+  await apiClient.delete('/users/logout');
+};
+
 export default {
   login,
   register,
+  fetchUser,
+  logOut,
 };

@@ -1,19 +1,19 @@
-import { Shield, Lock, Mail } from 'react-feather';
-import { Link, useResolvedPath } from 'react-router-dom';
-import { Snackbar, Spinning, Input } from '@/components';
-import schema from './schema';
-import { useForm } from 'react-hook-form';
-
-import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
+import { Shield, Lock, Mail } from 'react-feather';
+import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+import { useAuth } from '@/hooks/useAuth';
+
+import { Spinning, Input } from '@/components';
 import usersService from '@/services/usersService';
+import schema from './schema';
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
-  const [snackbar, setSnackbar] = useState<{
-    message: string;
-    variant: 'error' | 'success' | 'default';
-  } | null>(null);
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   type FormData = {
     email: string;
@@ -35,16 +35,10 @@ const Register = () => {
         email: data.email,
         password: data.password,
       });
-      setSnackbar({
-        message: 'Login realizado com sucesso!',
-        variant: 'success',
-      });
+      login();
+      navigate('/');
     } catch (error) {
       console.log(error);
-      setSnackbar({
-        message: 'Erro ao realizar login.',
-        variant: 'error',
-      });
     } finally {
       setLoading(false);
     }
@@ -69,6 +63,7 @@ const Register = () => {
                 <Input
                   placeholder="Digite seu e-mail"
                   label="E-mail"
+                  error={errors.email?.message}
                   {...register('email')}
                   icon={<Mail size={18} />}
                 />
@@ -77,6 +72,7 @@ const Register = () => {
                 <Input
                   placeholder="Digite sua senha"
                   label="Senha"
+                  error={errors.password?.message}
                   {...register('password')}
                   icon={<Lock size={18} />}
                 />
@@ -86,14 +82,6 @@ const Register = () => {
                   Entrar na plataforma
                 </button>
               </div>
-              {snackbar && (
-                <div className="p-2">
-                  <Snackbar
-                    message={snackbar.message}
-                    variant={snackbar.variant}
-                  />
-                </div>
-              )}
               <div className="p-1 h-[5%] flex items-center justify-center mt-1">
                 <p className="flex items-center text-sm text-gray-600">
                   Não tem uma conta?

@@ -1,11 +1,12 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
 type AuthContextType = {
   user: string | null;
-  login: (name: string) => void;
+  login: () => void;
   logout: () => void;
+  loading?: boolean;
 };
 
- const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | null>(null);
 
- export default AuthContext
+export default AuthContext;

@@ -1,5 +1,5 @@
 import { Shield, Lock, Mail } from 'react-feather';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 
@@ -22,6 +22,7 @@ const Register = () => {
     message: string;
     variant: 'error' | 'success' | 'default';
   } | null>(null);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -43,9 +44,13 @@ const Register = () => {
         message: 'Cadastro realizado com sucesso!',
         variant: 'success',
       });
-    } catch (error) {
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
+    } catch (error: any) {
       setSnackbar({
-        message: 'Erro ao realizar cadastro.',
+        message:
+          `${error?.response?.data?.message}` || 'Erro ao realizar cadastro',
         variant: 'error',
       });
     } finally {
@@ -127,7 +132,7 @@ const Register = () => {
               type="submit"
               className="w-full mt-3 bg-green-400 p-2.5 rounded-2xl text-black"
             >
-              Entrar na plataforma
+              Criar conta
             </button>
           </div>
 

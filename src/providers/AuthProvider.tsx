@@ -1,19 +1,49 @@
-import { useState, ReactNode } from "react";
-import AuthContext from "@/context/AuthContext";
+import { useState, ReactNode, useEffect } from 'react';
+import AuthContext from '@/context/AuthContext';
+import { usersService } from '@/services';
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const login = (name: string) => {
-    setUser(name);
+  const fetchUser = async () => {
+    try {
+      setLoading(true);
+      const response = await usersService.fetchUser();
+      console.log(response);
+      setUser(response.data?.user);
+    } catch {
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const logout = () => {
-    setUser(null);
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  console.log(user);
+
+  const login = async () => {
+    await fetchUser();
+  };
+
+  const logout = async () => {
+    try {
+      setLoading(true);
+      await usersService.logOut();
+      await fetchUser();
+      setUser(null);
+    } catch (error) {
+      console.error('Error logging out:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

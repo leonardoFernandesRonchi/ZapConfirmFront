@@ -1,12 +1,33 @@
-import { Search } from 'react-feather';
-import { AuthProvider } from '@/providers';
+import { useState } from 'react';
+import { BaseModal, Input } from '@/components';
 
 const Homepage = () => {
+  const [open, setOpen] = useState(true);
+
+  const handleOpen = () => setOpen(true);
+
   return (
     <>
+      <BaseModal
+        open={open}
+        setOpen={setOpen}
+        title="Registrar Contato"
+        text="Preencha os dados"
+      >
+        <div className="flex flex-col gap-1 min-w-[50%]">
+          <form>
+            <Input label="Preencha o nome" placeholder="Nome do contato" />
+            <Input label="Preencha o email" placeholder="Email do contato" />
+            <Input label="Preencha o fone" placeholder="Fone do contato" />
+          </form>
+        </div>
+      </BaseModal>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-800">Gestão de Contatos</h1>
-        <button className="mt-3 bg-green-500 p-3.5 text-blacks rounded-2xl">
+        <button
+          className="mt-3 bg-green-500 p-3.5 text-blacks rounded-2xl"
+          onClick={handleOpen}
+        >
           Novo Contato
         </button>
       </div>

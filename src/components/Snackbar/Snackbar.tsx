@@ -15,7 +15,7 @@ const Snackbar = ({ message, variant = 'default' }: SnackbarProps) => {
       className={`p-4 mb-4 text-sm rounded-md ${variantClasses[variant]}`}
       role="alert"
     >
-      <span className="font-medium">{message}</span>
+      <span className=" flex justify-center font-medium">{message}</span>
     </div>
   );
 };
