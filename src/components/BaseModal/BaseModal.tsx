@@ -13,12 +13,18 @@ const BaseModal = ({
   children,
   title,
   text,
+  confirmButton,
+  confirmButtonAction,
+  form,
 }: {
   open: boolean;
   setOpen: any;
   children?: ReactNode;
+  confirmButton?: boolean;
+  confirmButtonAction?: () => void;
   title: string;
   text: string;
+  form?: string;
 }) => {
   return (
     <div>
@@ -56,15 +62,26 @@ const BaseModal = ({
                 </div>
               </div>
               <div className="bg-white px-4 pt-5 pb-4">{children}</div>
-              <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+              <div className="bg-gray-50 px-4 py-3 sm:flex gap-2 sm:flex-row-reverse sm:px-6">
                 <button
                   type="button"
                   data-autofocus
                   onClick={() => setOpen(false)}
-                  className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                  className="mt-3 inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                 >
                   Cancelar
                 </button>
+                {confirmButton && (
+                  <button
+                    type="submit"
+                    data-autofocus
+                    form={form}
+                    onClick={confirmButtonAction}
+                    className="mt-3 inline-flex w-full justify-center rounded-md bg-green-500 px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                  >
+                    Continuar
+                  </button>
+                )}
               </div>
             </DialogPanel>
           </div>

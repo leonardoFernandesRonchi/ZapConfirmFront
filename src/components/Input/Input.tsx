@@ -11,7 +11,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, icon, error, placeholder, ...rest }, ref) => {
     return (
       <div className="w-full">
-        <label className="block text-sm font-medium text-gray-700 mb-1.5">
+        <label className="block text-sm font-medium text-gray-700 mb-1.5 pt-2">
           {label}
         </label>
 

@@ -1,27 +1,80 @@
 import { useState } from 'react';
 import { BaseModal, Input } from '@/components';
+import schema from './schema';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 const Homepage = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleOpen = () => setOpen(true);
 
+  type FormData = {
+    email: string;
+    phone: string;
+    name: string;
+  };
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({
+    defaultValues: {
+      email: '',
+      phone: '',
+      name: '',
+    },
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (data: FormData) => {
+    try {
+      setLoading(true);
+      console.log('deu certo');
+      reset();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+      setOpen(false);
+    }
+  };
   return (
     <>
-      <BaseModal
-        open={open}
-        setOpen={setOpen}
-        title="Registrar Contato"
-        text="Preencha os dados"
-      >
-        <div className="flex flex-col gap-1 min-w-[50%]">
-          <form>
-            <Input label="Preencha o nome" placeholder="Nome do contato" />
-            <Input label="Preencha o email" placeholder="Email do contato" />
-            <Input label="Preencha o fone" placeholder="Fone do contato" />
-          </form>
-        </div>
-      </BaseModal>
+      <form id="create-customer" onSubmit={handleSubmit(onSubmit)}>
+        <BaseModal
+          open={open}
+          setOpen={setOpen}
+          title="Registrar Contato"
+          text="Preencha os dados"
+          confirmButton
+          form="create-customer"
+        >
+          <div className="flex flex-col gap-1 min-w-[50%]">
+            <Input
+              {...register('name')}
+              error={errors.name?.message}
+              label="Preencha o nome"
+              placeholder="Nome do contato"
+            />
+            <Input
+              {...register('email')}
+              error={errors.email?.message}
+              label="Preencha o email"
+              placeholder="Email do contato"
+            />
+            <Input
+              {...register('phone')}
+              error={errors.phone?.message}
+              label="Preencha o fone"
+              placeholder="Fone do contato"
+            />
+          </div>
+        </BaseModal>
+      </form>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-800">Gestão de Contatos</h1>
         <button
