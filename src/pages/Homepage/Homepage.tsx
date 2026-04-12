@@ -3,6 +3,7 @@ import { BaseModal, Input } from '@/components';
 import schema from './schema';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { customerService } from '@/services';
 
 const Homepage = () => {
   const [open, setOpen] = useState(false);
@@ -30,10 +31,15 @@ const Homepage = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     try {
       setLoading(true);
-      console.log('deu certo');
+      await customerService.create({
+        email: data?.email,
+        phone: data?.phone,
+        name: data?.name,
+      });
+      console.log('foi criado');
       reset();
     } catch (error) {
       console.error(error);
