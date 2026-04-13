@@ -23,8 +23,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     fetchUser();
   }, []);
 
-  console.log(user);
-
   const login = async () => {
     await fetchUser();
   };

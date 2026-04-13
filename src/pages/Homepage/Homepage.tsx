@@ -4,10 +4,11 @@ import schema from './schema';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { customerService } from '@/services';
+import { useFetch } from '@/hooks/useFetch';
 
 const Homepage = () => {
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [secondLoading, setSecondLoading] = useState(false);
 
   const handleOpen = () => setOpen(true);
 
@@ -16,6 +17,10 @@ const Homepage = () => {
     phone: string;
     name: string;
   };
+
+  const { data, loading, error } = useFetch(customerService.index);
+  const customers = data?.data?.customers;
+  console.log(customers);
 
   const {
     register,
@@ -33,7 +38,7 @@ const Homepage = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      setLoading(true);
+      setSecondLoading(true);
       await customerService.create({
         email: data?.email,
         phone: data?.phone,
@@ -44,7 +49,7 @@ const Homepage = () => {
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false);
+      setSecondLoading(false);
       setOpen(false);
     }
   };

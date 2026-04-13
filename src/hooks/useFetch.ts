@@ -1,22 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
-export function useFetch(url : string) {
-  const [data, setData] = useState(null);
+export function useFetch(func: () => Promise<any>) {
+  const [data, setData] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(url);
-
-        if (!response.ok) {
-          throw new Error("Erro na requisição");
-        }
-
-        const json = await response.json();
-        setData(json);
-      } catch (err : any) {
+        const response = await func();
+        setData(response);
+      } catch (err: any) {
         setError(err.message);
       } finally {
         setLoading(false);
@@ -24,7 +18,7 @@ export function useFetch(url : string) {
     }
 
     fetchData();
-  }, [url]);
+  }, [func]);
 
   return { data, loading, error };
 }
