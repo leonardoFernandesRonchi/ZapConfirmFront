@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BaseModal, Input } from '@/components';
 import schema from './schema';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { customerService } from '@/services';
 import { useFetch } from '@/hooks/useFetch';
+import { Trash, Edit } from 'react-feather';
 
 const Homepage = () => {
   const [open, setOpen] = useState(false);
   const [secondLoading, setSecondLoading] = useState(false);
+  const [allCustomers, setAllCustomers] = useState<any[]>([]);
 
   const handleOpen = () => setOpen(true);
 
@@ -18,9 +20,17 @@ const Homepage = () => {
     name: string;
   };
 
-  const { data, loading, error } = useFetch(customerService.index);
-  const customers = data?.data?.customers;
-  console.log(customers);
+
+    const { data } = useFetch(customerService.index);
+    const customers = data?.data?.customers || [];
+  
+    useEffect(() => {
+      if(customers) {
+       setAllCustomers(customers)
+      }
+    }, [customers])
+
+ 
 
   const {
     register,
@@ -36,15 +46,20 @@ const Homepage = () => {
     resolver: yupResolver(schema),
   });
 
+  const handleAdd = (customer : any) => {
+    setAllCustomers(prev => [...prev, customer])
+  }
+
   const onSubmit = async (data: FormData) => {
     try {
       setSecondLoading(true);
-      await customerService.create({
+      const customer = await customerService.create({
         email: data?.email,
         phone: data?.phone,
         name: data?.name,
       });
-      console.log('foi criado');
+      const customerToAdd = customer?.data?.customer
+      handleAdd(customerToAdd)
       reset();
     } catch (error) {
       console.error(error);
@@ -53,6 +68,7 @@ const Homepage = () => {
       setOpen(false);
     }
   };
+
   return (
     <>
       <form id="create-customer" onSubmit={handleSubmit(onSubmit)}>
@@ -106,56 +122,35 @@ const Homepage = () => {
           />
         </div>
       </div>
-      <div className="min-w-[90%] flex justify-center items-center">
+      <div className="min-w-[90%] flex justify-center items-center overflow-y-auto">
         <table className="mt-5 table-fixed w-[90%]">
           <thead className="min-w-[90%] max-w-[90%] text-[#6D7C92]  bg-gray-200 rounded-3xl border-[#E2E8F0]">
             <tr className="p-4">
               <th className="p-5">Nome do Paciente</th>
               <th className="p-5">Contato</th>
-              <th className="p-5">Última Consulta</th>
-              <th className="p-5">Status</th>
+              <th className="p-5">Fone</th>
+              <th className="p-5">Ações</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[#F1F5F9] bg-white text-center">
-            <tr className="p-4">
-              <td className="p-5">Alfreds Futterkiste</td>
-              <td className="p-5">Maria Anders</td>
-              <td className="p-5">Germany</td>
-              <td className="p-5">Ativo</td>
-            </tr>
-            <tr className="p-4">
-              <td className="p-5">Centro comercial Moctezuma</td>
-              <td className="p-5">Francisco Chang</td>
-              <td className="p-5">Mexico</td>
-              <td className="p-5">Ativo</td>
-            </tr>
-            <tr className="p-4">
-              <td className="p-5">Ernst Handel</td>
-              <td className="p-5">Roland Mendel</td>
-              <td className="p-5">Austria</td>
-              <td className="p-5">Inativo</td>
-            </tr>
-            <tr className="p-4">
-              <td className="p-5">Island Trading</td>
-              <td className="p-5">Helen Bennett</td>
-              <td className="p-5">UK</td>
-              <td className="p-5">Ativo</td>
-            </tr>
-            <tr className="p-4">
-              <td className="p-5">Laughing Bacchus Winecellars</td>
-              <td className="p-5">Yoshi Tannamuri</td>
-              <td className="p-5">Canada</td>
-              <td className="p-5">Inativo</td>
-            </tr>
-            <tr className="p-4">
-              <td className="p-5">Magazzini Alimentari Riuniti</td>
-              <td className="p-5">Giovanni Rovelli</td>
-              <td className="p-5">Italy</td>
-              <td className="p-5">Ativo</td>
-            </tr>
+            {
+              allCustomers.map((customer: any, index: number) => (
+  <tr key={index}>
+    <td className="p-5">{customer.name}</td>
+    <td className="p-5">{customer.email}</td>
+    <td className="p-5">{customer.phone}</td>
+    <div className=' m-1 flex justify-center items-center gap-2'>
+    <Edit className='cursor-pointer' size={20}/>
+    <Trash className='cursor-pointer' size={20} />
+    </div>
+  </tr>
+))
+            }
+           
           </tbody>
         </table>
       </div>
+       
     </>
   );
 };
