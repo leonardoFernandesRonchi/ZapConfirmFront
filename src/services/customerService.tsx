@@ -22,7 +22,19 @@ const index = async () => {
   return response;
 };
 
+const destroy = async (id: string) => {
+  const response = await apiClient.delete(`/customers/${id}`);
+  return response;
+};
+
+const update = async ({ id, data }: { id: string; data: any }) => {
+  const response = await apiClient.put(`/customers/${id}`, data);
+  return response;
+};
+
 export default {
   create,
   index,
+  destroy,
+  update,
 };
