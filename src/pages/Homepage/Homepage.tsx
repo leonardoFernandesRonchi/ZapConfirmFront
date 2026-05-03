@@ -88,12 +88,18 @@ const Homepage = () => {
     }
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.toLowerCase();
+    const filtered = customers.filter((customer: any) =>
+      customer.name.toLowerCase().includes(value),
+    );
+    setAllCustomers(filtered);
+  };
+
   const onSubmit = async (data: FormData) => {
     try {
-      console.log('Entrou aqui');
       setSecondLoading(true);
       if (editingCustomer) {
-        console.log('Editando cliente');
         const response = await customerService.update({
           id: editingCustomer.id,
           data: {
@@ -104,7 +110,6 @@ const Homepage = () => {
         });
         const customer = response?.data?.customer;
 
-        console.log(response);
         setAllCustomers((prev) =>
           prev.map((c) => (c.id === editingCustomer.id ? customer : c)),
         );
@@ -209,7 +214,8 @@ const Homepage = () => {
             type="text"
             id="name"
             name="name"
-            placeholder="Buscar por nome, telefone ou e-mail"
+            placeholder="Buscar por nome"
+            onChange={(ev) => handleChange(ev)}
           />
         </div>
       </div>
