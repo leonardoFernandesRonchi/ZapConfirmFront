@@ -2,7 +2,7 @@ name: CI/CD Frontend
 
 on:
   push:
-    branches: ['main', 'development']
+    branches: ['main', 'dev']
   pull_request:
 
 jobs:
@@ -34,7 +34,7 @@ jobs:
             echo "repo=${{ secrets.DOCKER_USERNAME }}/frontend" >> $GITHUB_OUTPUT
             echo "tag=latest" >> $GITHUB_OUTPUT
 
-          elif [ "${{ github.ref_name }}" = "development" ]; then
+          elif [ "${{ github.ref_name }}" = "dev" ]; then
             echo "repo=${{ secrets.DOCKER_USERNAME }}/frontend" >> $GITHUB_OUTPUT
             echo "tag=dev" >> $GITHUB_OUTPUT
 
