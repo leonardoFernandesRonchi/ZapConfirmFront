@@ -13,10 +13,6 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v4
 
-      - name: Debug secrets
-        run: |
-          echo "USERNAME=${{ secrets.DOCKER_USERNAME }}"
-
       - name: Build da imagem (teste local)
         run: docker build -t frontend .
 
