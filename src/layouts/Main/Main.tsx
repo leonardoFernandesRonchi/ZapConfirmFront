@@ -1,4 +1,4 @@
-import { Calendar, Home, Users, MessageCircle, LogOut } from 'react-feather';
+import { Calendar, Home, Users, MessageCircle, LogOut, FileText, Code } from 'react-feather';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -48,6 +48,16 @@ const Main = () => {
           <div className="flex flex-col items-center md:flex-row gap-1 md:gap-2 cursor-pointer">
             <Users size={18} />
             <p className="text-xs md:text-base">Clientes</p>
+          </div>
+
+          <div className="flex flex-col items-center md:flex-row gap-1 md:gap-2 cursor-pointer">
+            <Code size={18} />
+            <p className="text-xs md:text-base">Variáveis</p>
+          </div>
+
+          <div className="flex flex-col items-center md:flex-row gap-1 md:gap-2 cursor-pointer">
+            <FileText size={18} />
+            <p className="text-xs md:text-base">Templates</p>
           </div>
 
           <div className="flex flex-col items-center md:flex-row gap-1 md:gap-2 cursor-pointer">
