@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { BaseModal, Input } from '@/components';
-import schema from './schema';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { customerService } from '@/services';
-import { useFetch } from '@/hooks/useFetch';
-import { Trash, Edit } from 'react-feather';
+import { useEffect, useState } from "react";
+import { BaseModal, Input } from "@/components";
+import schema from "./schema";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { customerService } from "@/services";
+import { useFetch } from "@/hooks/useFetch";
+import { Trash, Edit } from "react-feather";
 
 const Homepage = () => {
   const [open, setOpen] = useState(false);
@@ -45,9 +45,9 @@ const Homepage = () => {
       });
     } else {
       reset({
-        name: '',
-        email: '',
-        phone: '',
+        name: "",
+        email: "",
+        phone: "",
       });
     }
   }, [editingCustomer]);
@@ -59,9 +59,9 @@ const Homepage = () => {
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
-      email: '',
-      phone: '',
-      name: '',
+      email: "",
+      phone: "",
+      name: "",
     },
     resolver: yupResolver(schema),
   });
@@ -81,7 +81,7 @@ const Homepage = () => {
   };
 
   const handleDeleteClick = (customerId: string) => {
-    const confirm = window.confirm('Tem certeza que deseja excluir?');
+    const confirm = window.confirm("Tem certeza que deseja excluir?");
 
     if (confirm) {
       handleDelete(customerId);
@@ -91,7 +91,7 @@ const Homepage = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toLowerCase();
     const filtered = customers.filter((customer: any) =>
-      customer.name.toLowerCase().includes(value),
+      customer.name.toLowerCase().includes(value)
     );
     setAllCustomers(filtered);
   };
@@ -111,7 +111,7 @@ const Homepage = () => {
         const customer = response?.data?.customer;
 
         setAllCustomers((prev) =>
-          prev.map((c) => (c.id === editingCustomer.id ? customer : c)),
+          prev.map((c) => (c.id === editingCustomer.id ? customer : c))
         );
         return;
       } else {
@@ -145,19 +145,19 @@ const Homepage = () => {
         >
           <div className="flex flex-col gap-1 min-w-[50%]">
             <Input
-              {...register('name')}
+              {...register("name")}
               error={errors.name?.message}
               label="Preencha o nome"
               placeholder="Nome do contato"
             />
             <Input
-              {...register('email')}
+              {...register("email")}
               error={errors.email?.message}
               label="Preencha o email"
               placeholder="Email do contato"
             />
             <Input
-              {...register('phone')}
+              {...register("phone")}
               error={errors.phone?.message}
               label="Preencha o fone"
               placeholder="Fone do contato"
@@ -177,19 +177,19 @@ const Homepage = () => {
         >
           <div className="flex flex-col gap-1 min-w-[50%]">
             <Input
-              {...register('name')}
+              {...register("name")}
               error={errors.name?.message}
               label="Preencha o nome"
               placeholder="Nome do contato"
             />
             <Input
-              {...register('email')}
+              {...register("email")}
               error={errors.email?.message}
               label="Preencha o email"
               placeholder="Email do contato"
             />
             <Input
-              {...register('phone')}
+              {...register("phone")}
               error={errors.phone?.message}
               label="Preencha o fone"
               placeholder="Fone do contato"
